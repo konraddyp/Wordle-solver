@@ -12,11 +12,21 @@ for url in website_list:
     res.append(requests.get(url))
     res[-1].raise_for_status()
 #res.raise_for_status()
-wordsoup = bs4.BeautifulSoup()
-for response in res:
-    wordsoup += bs4.BeautifulSoup(response.text,"html.parser")
 
 filename = 'fiveletterwords.txt'
 with open(filename, 'w+', encoding="utf-8") as f:
-    for i in wordsoup.select('span.mot'):
-        f.write(i.getText())
+    for response in res:
+        wordsoup = bs4.BeautifulSoup(response.text,"html.parser")
+        for word in wordsoup.select('span.mot'):
+            for k in word.getText().split():
+                f.write(k+'\n')
+f.close()
+
+filename1 = 'crazyfiveletterwords.txt'
+with open(filename1, 'w+', encoding="utf-8") as g:
+    for response in res:
+        wordsoup = bs4.BeautifulSoup(response.text,"html.parser")
+        for word in wordsoup.select('span.mot2'):
+            for k in word.getText().split():
+                g.write(k+'\n')
+g.close()

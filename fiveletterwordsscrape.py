@@ -14,19 +14,20 @@ for url in website_list:
 #res.raise_for_status()
 
 filename = 'fiveletterwords.txt'
-with open(filename, 'w+', encoding="utf-8") as f:
-    for response in res:
-        wordsoup = bs4.BeautifulSoup(response.text,"html.parser")
-        for word in wordsoup.select('span.mot'):
-            for k in word.getText().split():
-                f.write(k+'\n')
-f.close()
-
 filename1 = 'crazyfiveletterwords.txt'
-with open(filename1, 'w+', encoding="utf-8") as g:
+filename2 = 'allfiveletterwords.txt'
+
+with open(filename, 'w+', encoding="utf-8") as f, open(filename1, 'w+', encoding="utf-8") as g, open(filename2, 'w+', encoding="utf-8") as h:
     for response in res:
         wordsoup = bs4.BeautifulSoup(response.text,"html.parser")
-        for word in wordsoup.select('span.mot2'):
+        for word in wordsoup.select('span.mot,span.mot2'):
             for k in word.getText().split():
-                g.write(k+'\n')
+                if word['class'] == ['mot']:
+                    f.write(k+'\n')
+                else:
+                    g.write(k+'\n')
+                h.write(k+'\n')
+
+f.close()
 g.close()
+h.close()
